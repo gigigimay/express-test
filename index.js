@@ -26,6 +26,34 @@ router.post('/webhook', (req, res) => {
   res.status(200).send(req.body)
 })
 
+function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+let concurrent = 0
+
+router.post('/delay/*', (req, res) => {
+  const seconds = randomIntFromInterval(1, 30)
+  concurrent += 1
+  console.log(
+    '\nDELAY',
+    seconds,
+    'seconds, concurrent:',
+    concurrent,
+    '---',
+    req.path
+  )
+  setTimeout(() => {
+    const status = Math.random() > 0.7 ? 504 : 500
+    // const status = 200
+
+    concurrent -= 1
+    console.log(`DELAY ${seconds} seconds DONE. new concurrent: ${concurrent}`)
+    res.status(status).send({ message: `bello ${status}` })
+  }, seconds * 1000)
+})
+
 const startApp = () => {
   const app = express()
   app.set('trust proxy', true)
