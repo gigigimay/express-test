@@ -20,7 +20,7 @@ router.post('/webhook', (req, res) => {
   console.log(
     `\n/webhook [${new Date().toLocaleTimeString()}] from: ${
       req.query.from
-    }, key: ${req.body.key}, data.id: ${req.body.data.id}`
+    }, key: ${req.body.key}, data.id: ${req.body.data?.id}`
   )
   console.log(DIMMED_COLOR, JSON.stringify(req.body))
   res.status(200).send(req.body)
